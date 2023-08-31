@@ -19,7 +19,7 @@ def room(request, pk):
     context = {'room': room}
 
     return render(request, 'base/room.html', context)
-
+# you can use contains functions
 def createRoom(request):
     form = RoomForm()
     context = {'form': form}
