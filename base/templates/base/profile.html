@@ -1,26 +1,49 @@
 {% extends 'main.html' %}
-
 {% block content %}
-<style>
-    .profile-container{
-        display: grid;
-        grid-template-columns: 1fr 3fr 1fr;
-    }
-</style>
 
-<h1>{{user.username}}</h1>
+<main class="profile-page layout layout--3">
+  <div class="container">
+    <!-- Topics Start -->
+    {% include 'base/topics_component.html' %}
+    <!-- Topics End -->
 
-<div class="profile-container">
-    <div>
-        {% include 'base/topics_component.html' %}
-    </div>
+    <!-- Room List Start -->
+    <div class="roomList">
+      <div class="profile">
+        <div class="profile__avatar">
+          <div class="avatar avatar--large active">
+            <img src="https://randomuser.me/api/portraits/men/11.jpg" />
+          </div>
+        </div>
+        <div class="profile__info">
+          <h3>{{user.username}}</h3>
+          <p>@{{user.username}}</p>
+          {% if request.user == user %}
+          <a href="{% url 'update-user' %}" class="btn btn--main btn--pill">Edit Profile</a>
+          {% endif %}
+        </div>
+        <div class="profile__about">
+          <h3></h3>
+          <p>
+            
+          </p>
+        </div>
+      </div>
 
-    <div>
-        {% include 'base/feed_component.html' %}
+      <div class="roomList__header">
+        <div>
+          <h2>Study Rooms Hosted by {{user.username}}</a>
+          </h2>
+        </div>
+      </div>
+      {% include 'base/feed_component.html' %}
     </div>
-    <div>
-        {% include 'base/activity_component.html' %}
-        
-    </div>
-</div>
-{% endblock %}
+    <!-- Room List End -->
+
+    <!-- Activities Start -->
+    {% include 'base/activity_component.html' %}
+    <!-- Activities End -->
+  </div>
+</main>
+
+{% endblock content %}
