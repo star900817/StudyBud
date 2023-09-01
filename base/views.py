@@ -91,6 +91,15 @@ def room(request, pk):
     context = {'room': room, 'room_messages': room_messages, 'participants': participants}
 
     return render(request, 'base/room.html', context)
+
+def userProfile(request, pk):
+    user = User.objects.get(id=pk)
+    rooms = user.room_set.all()
+    room_messages = user.message_set.all()
+    topics = Topic.objects.all()
+    context = {'user': user, 'rooms': rooms, 'room_messages': room_messages, 'topics': topics}
+    return render(request, 'base/profile.html', context)
+
 # you can use contains functions
 @login_required(login_url='/login')
 def createRoom(request):
@@ -98,7 +107,9 @@ def createRoom(request):
     if request.method == 'POST':
         form  = RoomForm(request.POST)
         if form.is_valid():
-            form.save()
+            room = form.save(commit=False)
+            room.host = request.user
+            room.save()
             return redirect('home')
     context = {'form': form}
     return render(request, 'base/room_form.html', context)
